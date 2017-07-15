@@ -8,7 +8,14 @@ namespace InterceptionWithCastle
         public void Intercept(IInvocation invocation)
         {
             WriteMessage(invocation, "Before method ", ConsoleColor.DarkYellow);
-            invocation.Proceed();
+
+            Random random = new Random(Guid.NewGuid().GetHashCode());
+
+            for (int i = 0; i < random.Next(10); i++)
+            {
+                invocation.Proceed();
+            }
+
             WriteMessage(invocation, "End method ", ConsoleColor.Yellow);
         }
 

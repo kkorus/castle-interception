@@ -2,9 +2,9 @@
 
 namespace InterceptionWithCastle
 {
-    public class MotherFBussinesClass
+    public class MotherFBussinesClass : IMotherFBussinesClass
     {
-        public virtual void Method1()
+        public void Method1()
         {
             Console.WriteLine("I am MotherFBussinesClass");
         }

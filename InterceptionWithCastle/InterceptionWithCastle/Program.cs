@@ -1,4 +1,6 @@
-﻿using Castle.DynamicProxy;
+﻿using Castle.Core;
+using Castle.MicroKernel.Registration;
+using Castle.Windsor;
 
 namespace InterceptionWithCastle
 {
@@ -6,20 +8,27 @@ namespace InterceptionWithCastle
     {
         private static void Main(string[] args)
         {
-            var proxyGenerator = new ProxyGenerator();
+            IWindsorContainer container = new WindsorContainer();
 
-            var obj = proxyGenerator
-                .CreateClassProxy<MotherFBussinesClass>(
-                    new MyInterceptorAspect()
-                );
+            container.Register(
+                Component.For<MyInterceptorAspect>());
 
-            var obj2 = proxyGenerator
-                .CreateClassProxy<AnotherBussinesClass>(
-                    new MyInterceptorAspect()
-                );
+            container.Register(Classes.FromThisAssembly()
+                .InSameNamespaceAs<IAnotherBussinesClass>()
+                .WithService.DefaultInterfaces()
+                .Configure(delegate (ComponentRegistration c)
+                {
 
-            obj.Method1();
-            obj2.Method1();
+                    var x = c.Interceptors(InterceptorReference.
+                        ForType<MyInterceptorAspect>()).Anywhere;
+                }));
+
+
+            var obj3 = container.Resolve<IMotherFBussinesClass>();
+            var obj4 = container.Resolve<IAnotherBussinesClass>();
+
+            obj3.Method1();
+            obj4.Method1();
         }
     }
 }

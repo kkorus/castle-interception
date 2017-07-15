@@ -2,9 +2,9 @@
 
 namespace InterceptionWithCastle
 {
-    public class AnotherBussinesClass
+    public class AnotherBussinesClass : IAnotherBussinesClass
     {
-        public virtual void Method1()
+        public void Method1()
         {
             Console.WriteLine("I am AnotherBussinesClass");
         }
